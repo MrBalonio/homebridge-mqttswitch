@@ -66,7 +66,7 @@ function MqttSwitchAccessory(log, config) {
 		this.offValue 	= "0";
 	}
 	if (config["integerStatus"]) {
-        that.integerStatus = true;
+        this.integerStatus = true;
 	}
     else {
         this.integerStatus = false;
@@ -92,7 +92,7 @@ function MqttSwitchAccessory(log, config) {
 	this.client.on('message', function (topic, message) {
 		if (topic == that.topicStatusGet) {
 			var status = message.toString();
-            if (this.integerStatus){
+            if (that.integerStatus){
                 int_status = parseInt(status);
 			    that.switchStatus = (int_status == 1 ) ? true : false;
 		   	    that.service.getCharacteristic(Characteristic.On).setValue(that.switchStatus, undefined, 'fromSetValue');
