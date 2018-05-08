@@ -66,7 +66,7 @@ function MqttSwitchAccessory(log, config) {
 		this.offValue 	= "0";
 	}
 	if (config["integerStatus"]) {
-        this.integerStatus = true;
+        that.integerStatus = true;
 	}
     else {
         this.integerStatus = false;
