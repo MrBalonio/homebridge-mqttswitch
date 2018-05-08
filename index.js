@@ -17,6 +17,7 @@
 //			  "offValue": "OPTIONALLY PUT THE VALUE THAT MEANS OFF HERE (DEFAULT false)",
 //			  "statusCmd": "OPTIONALLY PUT THE STATUS COMMAND HERE",
 //			  "integerValue": "OPTIONALLY SET THIS TRUE TO USE 1/0 AS VALUES",
+//			  "integerStatus": "OPTIONALLY STATUS EXPECTS AN INTERGER 1/0 AS VALUE",
 //     }
 // ],
 //
@@ -64,6 +65,13 @@ function MqttSwitchAccessory(log, config) {
 		this.onValue 	= "1";
 		this.offValue 	= "0";
 	}
+	if (config["integerStatus"]) {
+        this.integerStatus = true;
+	}
+    else {
+        this.integerStatus = false;
+    }
+
     this.statusCmd 		= config["statusCmd"];
 
 	this.switchStatus 	= false;
@@ -84,9 +92,16 @@ function MqttSwitchAccessory(log, config) {
 	this.client.on('message', function (topic, message) {
 		if (topic == that.topicStatusGet) {
 			var status = message.toString();
-            if (status == that.onValue || status == that.offValue) {
-			    that.switchStatus = (status == that.onValue) ? true : false;
+            if (this.integerStatus){
+                int_status = parseInt(status);
+			    that.switchStatus = (status == 0 ) ? true : false;
 		   	    that.service.getCharacteristic(Characteristic.On).setValue(that.switchStatus, undefined, 'fromSetValue');
+            }
+            else {
+                if (status == that.onValue || status == that.offValue) {
+                    that.switchStatus = (status == that.onValue) ? true : false;
+                    that.service.getCharacteristic(Characteristic.On).setValue(that.switchStatus, undefined, 'fromSetValue');
+                }
             }
 		}
 	});
