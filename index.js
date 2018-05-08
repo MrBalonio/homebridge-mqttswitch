@@ -94,7 +94,7 @@ function MqttSwitchAccessory(log, config) {
 			var status = message.toString();
             if (this.integerStatus){
                 int_status = parseInt(status);
-			    that.switchStatus = (status == 0 ) ? true : false;
+			    that.switchStatus = (int_status == 1 ) ? true : false;
 		   	    that.service.getCharacteristic(Characteristic.On).setValue(that.switchStatus, undefined, 'fromSetValue');
             }
             else {
