@@ -91,6 +91,7 @@ function MqttSwitchAccessory(log, config) {
 
 	this.client.on('message', function (topic, message) {
 		if (topic == that.topicStatusGet) {
+            that.log("topic is " + that.topicStatusGet);
 			var status = message.toString();
             if (that.integerStatus == true){
                 that.log("status is an integer");
